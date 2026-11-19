@@ -41,6 +41,12 @@
   <img src="https://img.shields.io/badge/Claude%20Code-D97757?style=for-the-badge&logo=anthropic&logoColor=white" />
 </p>
 
+## 🏆 All-time contributions
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/contributions.svg" width="100%" />
+</p>
+
 ## 📊 GitHub stats
 
 <p align="center">
