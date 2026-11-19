@@ -58,12 +58,12 @@
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=ZPatelDBS&theme=tokyo-night&hide_border=true&area=true&bg_color=1a1b26" width="100%" />
 </p>
 
-## 🐍 Watch my contributions get eaten
+## 👾 Pac-Man vs my contributions
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/github-snake-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/github-snake.svg" />
-  <img alt="contribution snake" src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/github-snake-dark.svg" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-contribution-graph-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-contribution-graph.svg" />
+  <img alt="Pac-Man contribution graph" src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-contribution-graph.svg" />
 </picture>
 
 <!-- ===== Animated footer ===== -->
