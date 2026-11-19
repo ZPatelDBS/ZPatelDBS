@@ -1,16 +1,14 @@
-## Hi there 👋
-
-<!--
-**ZPatelDBS/ZPatelDBS** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+<!-- ===== Animated header ===== --> <img src="https://capsule-render.vercel.app/api?type=waving&color=0:7aa2f7,50:bb9af7,100:9ece6a&height=180&section=header&text=Zaeem%20Patel&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Full-stack%20developer%20%C2%B7%20Johannesburg%2C%20South%20Africa&descAlignY=58&descSize=16&animation=twinkling" width="100%" /> <p align="center"> <a href="https://github.com/ZPatelDBS"> <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=3000&pause=800&color=7AA2F7&center=true&vCenter=true&width=620&lines=Building+healthcare+claims+automation+%F0%9F%8F%A5;Next.js+%C2%B7+Node.js+%C2%B7+PostgreSQL+%C2%B7+Redis;Running+an+e-commerce+store+on+the+side+%F0%9F%9B%92;Shipping+a+WhatsApp+ordering+platform+%F0%9F%8C%AE;Learning+Power+Platform+%E2%9A%A1" alt="Typing SVG" /> </a> </p> <p align="center"> <img src="https://komarev.com/ghpvc/?username=ZPatelDBS&label=Profile%20views&color=7aa2f7&style=flat" /> <img src="https://img.shields.io/badge/Based%20in-Johannesburg%20🇿🇦-9ece6a?style=flat" /> <a href="https://kosmo.co.za"><img src="https://img.shields.io/badge/Shop-kosmo.co.za-bb9af7?style=flat" /></a> </p> <!-- ===== Animated terminal ===== --> <p align="center"> <img src="./assets/terminal.svg" alt="terminal intro" width="100%" /> </p>
+🚀 What I'm working on
+	Project	What it is
+🏥	Claims automation portal	Gap cover claims processing with AI line-item recommendations — Next.js, Node.js, PostgreSQL, Redis
+🪪	Identity enrolment portal	Biometric enrolment web portal — ASP.NET MVC, jQuery, Bootstrap
+🛒	Kosmo	My own South African e-commerce store — Samsung phones, Hoco accessories, ZTE routers
+🌮	WhatsApp ordering	Order-online, collect-in-store platform for restaurants, with WhatsApp built in
+⚡	Power Platform	Learning Power Apps, Power Automate & Power BI — building a leave management app
+🛠️ Tech stack
+<p align="center"> <img src="https://skillicons.dev/icons?i=nextjs,nodejs,js,postgres,redis,cs,dotnet,jquery,bootstrap,html,css&perline=11" /> <br/><br/> <img src="https://skillicons.dev/icons?i=wordpress,azure,git,github,vscode,visualstudio&perline=6" /> </p> <p align="center"> <img src="https://img.shields.io/badge/Power%20Apps-742774?style=for-the-badge" /> <img src="https://img.shields.io/badge/Power%20Automate-0066FF?style=for-the-badge" /> <img src="https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logoColor=black" /> <img src="https://img.shields.io/badge/WooCommerce-96588A?style=for-the-badge&logo=woocommerce&logoColor=white" /> <img src="https://img.shields.io/badge/Cursor-000000?style=for-the-badge" /> <img src="https://img.shields.io/badge/Claude%20Code-D97757?style=for-the-badge&logo=anthropic&logoColor=white" /> </p>
+📊 GitHub stats
+<p align="center"> <img height="170" src="https://github-readme-stats.vercel.app/api?username=ZPatelDBS&show_icons=true&count_private=true&include_all_commits=true&theme=tokyonight&hide_border=true&bg_color=1a1b26" /> <img height="170" src="https://streak-stats.demolab.com?user=ZPatelDBS&theme=tokyonight&hide_border=true&background=1a1b26" /> </p> <p align="center"> <img src="https://github-readme-activity-graph.vercel.app/graph?username=ZPatelDBS&theme=tokyo-night&hide_border=true&area=true&bg_color=1a1b26" width="100%" /> </p>
+🐍 Watch my contributions get eaten
+<picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/github-snake-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/github-snake.svg" /> <img alt="contribution snake" src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/github-snake-dark.svg" /> </picture> <!-- ===== Animated footer ===== --> <img src="https://capsule-render.vercel.app/api?type=waving&color=0:9ece6a,50:bb9af7,100:7aa2f7&height=110&section=footer&animation=twinkling" width="100%" />
