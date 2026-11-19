@@ -21,17 +21,17 @@
 
   <rect width="820" height="300" rx="12" fill="url(#bg)" stroke="#2f334d"/>
   <circle cx="24" cy="22" r="6" fill="#f7768e"/><circle cx="44" cy="22" r="6" fill="#e0af68"/><circle cx="64" cy="22" r="6" fill="#9ece6a"/>
-  <text x="410" y="27" text-anchor="middle" class="t" fill="#565f89" font-size="13">zaeem@jhb: ~</text>
+  <text x="410" y="27" text-anchor="middle" class="t" fill="#565f89" font-size="13">zaeem@dbn: ~</text>
 
   <g class="t">
     <text x="24" y="76" clip-path="url(#l1)"><tspan class="p">❯ </tspan><tspan class="c">whoami</tspan></text>
-    <text x="24" y="100" clip-path="url(#l2)" class="o">Zaeem Patel — full-stack developer · Johannesburg, South Africa 🇿🇦</text>
+    <text x="24" y="100" clip-path="url(#l2)" class="o">Zaeem Patel — full-stack developer · Durban, South Africa 🇿🇦</text>
 
     <text x="24" y="136" clip-path="url(#l3)"><tspan class="p">❯ </tspan><tspan class="c">cat stack.txt</tspan></text>
     <text x="24" y="160" clip-path="url(#l4)" class="y">Next.js · Node.js · PostgreSQL · Redis · ASP.NET MVC · WordPress</text>
 
     <text x="24" y="196" clip-path="url(#l5)"><tspan class="p">❯ </tspan><tspan class="c">ls ./building</tspan></text>
-    <text x="24" y="220" clip-path="url(#l6)" class="m">claims-automation/  identity-enrolment/  kosmo-store/  whatsapp-ordering/</text>
+    <text x="24" y="220" clip-path="url(#l6)" class="m">web-apps/  enterprise-systems/  api-integrations/  automations/</text>
 
     <text x="24" y="256" clip-path="url(#l7)"><tspan class="p">❯ </tspan><tspan class="c">./learn --next</tspan></text>
     <text x="24" y="280" clip-path="url(#l8)" class="o">Power Apps ▸ Power Automate ▸ Power BI  ✔</text>
