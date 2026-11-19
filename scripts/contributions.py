@@ -4,21 +4,30 @@
 Usage: GITHUB_TOKEN=... python3 contributions.py <username> <output.svg>
        python3 contributions.py --demo <output.svg>   (fake data, for testing)
 """
-import json, os, sys, urllib.request, random
+import json, os, sys, time, traceback, urllib.request, urllib.error, random
 from datetime import datetime, timedelta, timezone, date
 from collections import OrderedDict
 
 API = "https://api.github.com/graphql"
 
 def gql(query, variables, token):
-    req = urllib.request.Request(API, data=json.dumps({"query": query, "variables": variables}).encode(),
-                                 headers={"Authorization": f"bearer {token}", "Content-Type": "application/json",
-                                          "User-Agent": "contrib-card"})
-    with urllib.request.urlopen(req) as r:
-        out = json.load(r)
-    if "errors" in out:
-        raise SystemExit(f"GraphQL error: {out['errors']}")
-    return out["data"]
+    body = json.dumps({"query": query, "variables": variables}).encode()
+    last = None
+    for attempt in range(4):
+        req = urllib.request.Request(API, data=body, headers={
+            "Authorization": f"bearer {token}", "Content-Type": "application/json", "User-Agent": "contrib-card"})
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                out = json.load(r)
+            if "errors" in out:
+                raise RuntimeError(f"GraphQL error: {out['errors']}")
+            return out["data"]
+        except urllib.error.HTTPError as e:
+            last = f"HTTP {e.code}: {e.read().decode(errors='replace')[:300]}"
+        except Exception as e:
+            last = str(e)
+        time.sleep(3 * (attempt + 1))
+    raise RuntimeError(last)
 
 def fetch_days(user, token):
     created = gql("query($u:String!){user(login:$u){createdAt}}", {"u": user}, token)["user"]["createdAt"]
@@ -29,7 +38,7 @@ def fetch_days(user, token):
     days = {}
     cur = start
     while cur < now:
-        end = min(cur + timedelta(days=365), now)
+        end = min(cur + timedelta(days=364), now)
         data = gql(q, {"u": user, "f": cur.isoformat(), "t": end.isoformat()}, token)
         for w in data["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]:
             for d in w["contributionDays"]:
@@ -146,12 +155,22 @@ def build_svg(start, days):
 </svg>'''
 
 if __name__ == "__main__":
-    if sys.argv[1] == "--demo":
-        start, days = demo_days(); out = sys.argv[2]
-    else:
-        token = os.environ.get("GH_TOKEN") or os.environ["GITHUB_TOKEN"]
-        start, days = fetch_days(sys.argv[1], token); out = sys.argv[2]
-    os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
-    with open(out, "w", encoding="utf-8") as f:
-        f.write(build_svg(start, days))
-    print(f"wrote {out}: {sum(days.values())} contributions since {start}")
+    try:
+        if sys.argv[1] == "--demo":
+            start, days = demo_days(); out = sys.argv[2]
+        else:
+            token = os.environ.get("CONTRIB_TOKEN") or os.environ.get("GITHUB_TOKEN")
+            if not token:
+                raise RuntimeError("No token found: GITHUB_TOKEN is not set for this step")
+            start, days = fetch_days(sys.argv[1], token); out = sys.argv[2]
+        if not days:
+            raise RuntimeError("GitHub returned no contribution days")
+        os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
+        with open(out, "w", encoding="utf-8") as f:
+            f.write(build_svg(start, days))
+        print(f"wrote {out}: {sum(days.values())} contributions since {start}")
+    except Exception as e:
+        traceback.print_exc()
+        msg = str(e).replace("\n", " ")[:400]
+        print(f"::error title=Contributions card failed::{type(e).__name__}: {msg}")
+        sys.exit(1)
