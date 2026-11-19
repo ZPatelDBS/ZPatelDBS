@@ -50,7 +50,7 @@
 ## 📊 GitHub stats
 
 <p align="center">
-  <img height="170" src="https://github-readme-stats.vercel.app/api?username=ZPatelDBS&show_icons=true&count_private=true&include_all_commits=true&theme=tokyonight&hide_border=true&bg_color=1a1b26" />
+  <img height="170" src="https://github-readme-stats.vercel.app/api?username=ZPatelDBS&show_icons=true&count_private=true&theme=tokyonight&hide_border=true&bg_color=1a1b26" />
   <img height="170" src="https://streak-stats.demolab.com?user=ZPatelDBS&theme=tokyonight&hide_border=true&background=1a1b26" />
 </p>
 
