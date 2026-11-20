@@ -19,6 +19,12 @@
 >
 > **Current objective.** Learning Power Apps, Power Automate and Power BI to automate real business processes.
 
+<p align="center">
+  <a href="https://www.linkedin.com/in/zaeempatel">
+    <img src="./assets/linkedin.svg" alt="Connect with Zaeem Patel on LinkedIn" width="100%" />
+  </a>
+</p>
+
 ## 🚀 What I do
 
 - 🏗️ Building full-stack web applications and enterprise systems
