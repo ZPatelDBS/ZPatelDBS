@@ -1,8 +1,8 @@
 <!-- ===== Singularity: title card ===== -->
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-hero-dark.svg?v=4" />
-    <img alt="Zaeem Patel, full-stack developer in Durban. A black hole whose accretion disk is drawn from a year of contributions, one particle per day." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-hero-light.svg?v=4" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-hero-dark.svg?v=5" />
+    <img alt="Zaeem Patel, full-stack developer in Durban. A black hole whose accretion disk is drawn from a year of contributions, one particle per day." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-hero-light.svg?v=5" width="100%" />
   </picture>
 </p>
 
