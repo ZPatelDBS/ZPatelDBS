@@ -1,0 +1,37 @@
+{
+  "name": "Zaeem Patel",
+  "headline": "Full-stack developer · Durban, South Africa",
+  "missionName": "Horizon I",
+  "playerClass": "Bug hunter",
+  "signoff": "Thanks for playing!",
+  "stack": [
+    "Next.js",
+    "Node.js",
+    "PostgreSQL",
+    "Redis",
+    "ASP.NET",
+    "Power Apps"
+  ],
+  "ghosts": [
+    {
+      "name": "web-apps",
+      "description": "Full-stack web applications",
+      "language": "TypeScript"
+    },
+    {
+      "name": "enterprise",
+      "description": "Enterprise systems in healthcare and identity",
+      "language": "C#"
+    },
+    {
+      "name": "apis",
+      "description": "APIs, integrations and database schemas",
+      "language": "JavaScript"
+    },
+    {
+      "name": "automations",
+      "description": "Power Apps, Power Automate and Power BI",
+      "language": "Power Fx"
+    }
+  ]
+}
