@@ -177,6 +177,89 @@ function orbiter(c, light, cx, cy, tilt, half) {
 </g></g>`;
 }
 
+
+// Added for ZPatelDBS: a distant space battle in the background. An alien saucer is chased by a
+// fighter, shoots a second fighter down, and a smaller dogfight circles on the far side. SMIL, so it
+// plays inside an <img>; small and dim so it stays in the background.
+function spaceBattle(light) {
+  const hull = light ? '#4a4540' : '#c3c7d2';
+  const dark = light ? '#14161c' : '#2a3142';
+  const D = 12;
+  const fighter = (engine) => `<g>
+    <path d="M7 0 L-5 -4 L-3 0 L-5 4 Z" fill="${hull}"/>
+    <path d="M-1 -1.5 L-6 -6 L-4 -1 Z M-1 1.5 L-6 6 L-4 1 Z" fill="${dark}"/>
+    <circle cx="-5" cy="0" r="1.6" fill="${engine}"><animate attributeName="r" values="1.2;2.2;1.2" dur=".2s" repeatCount="indefinite"/></circle>
+  </g>`;
+  const bolt = (color, every, delay, len = 46) => `<line x1="8" y1="0" x2="14" y2="0" stroke="${color}" stroke-width="1.4" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="1;1;0" keyTimes="0;.85;1" dur="${every}s" begin="${delay}s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" values="0 0;${len} 0" dur="${every}s" begin="${delay}s" repeatCount="indefinite"/>
+  </line>`;
+  const saucer = `<g>
+    <ellipse cx="0" cy="-2" rx="4.5" ry="3.5" fill="#9ece6a" fill-opacity=".85"/>
+    <ellipse cx="0" cy="0" rx="11" ry="3" fill="${hull}"/>
+    <ellipse cx="0" cy="1" rx="11" ry="2" fill="${dark}"/>
+    <g fill="#9ece6a"><circle cx="-7" cy="0.5" r=".9"><animate attributeName="opacity" values="1;.2;1" dur=".6s" repeatCount="indefinite"/></circle><circle cx="0" cy="1.2" r=".9"><animate attributeName="opacity" values=".2;1;.2" dur=".6s" repeatCount="indefinite"/></circle><circle cx="7" cy="0.5" r=".9"><animate attributeName="opacity" values="1;.2;1" dur=".6s" repeatCount="indefinite"/></circle></g>
+    <ellipse cx="0" cy="6" rx="5" ry="6" fill="#9ece6a" opacity=".08"/>
+  </g>`;
+  const at = (v) => v.map(([x, y]) => `${x},${y}`).join(';');
+  const times = '0;0.25;0.5;0.75;1';
+  const sauc = [[110, 95], [250, 135], [340, 90], [200, 122], [110, 95]];
+  const chaser = [[40, 128], [175, 150], [285, 128], [300, 140], [40, 128]];
+  // The fighter that gets shot down: closes in, is hit at 7s, then is gone until the loop restarts.
+  const boom = [362, 72];
+  return `<g opacity="${light ? 0.55 : 0.7}">
+  <g>
+    <animateMotion values="${at(sauc)}" keyTimes="${times}" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1" dur="${D}s" repeatCount="indefinite"/>
+    ${saucer}
+    <g transform="rotate(-35)">${bolt('#9ece6a', 1.7, 0.4, 40)}</g>
+    <g transform="rotate(160)">${bolt('#9ece6a', 2.3, 1.1, 40)}</g>
+  </g>
+  <g>
+    <animateMotion values="${at(chaser)}" keyTimes="${times}" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1" rotate="auto" dur="${D}s" repeatCount="indefinite"/>
+    ${fighter('#7dd3fc')}
+    ${bolt('#7dd3fc', 0.9, 0, 52)}
+    ${bolt('#7dd3fc', 0.9, 0.3, 52)}
+  </g>
+  <g>
+    <animateMotion values="440,150;402,92;${boom[0]},${boom[1]};${boom[0]},${boom[1]}" keyTimes="0;0.3;0.583;1" dur="${D}s" rotate="auto" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.58;0.585;1" calcMode="discrete" dur="${D}s" repeatCount="indefinite"/>
+    <g transform="rotate(180)">${fighter('#f7768e')}</g>
+    <g transform="rotate(180)">${bolt('#f7768e', 1.1, 0.2, 40)}</g>
+  </g>
+  <line x1="0" y1="0" x2="8" y2="0" stroke="#9ece6a" stroke-width="1.6" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.53;0.531;0.58;0.581;1" dur="${D}s" repeatCount="indefinite"/>
+    <animateMotion values="330,96;330,96;330,96;${boom[0] - 6},${boom[1] + 3};${boom[0] - 6},${boom[1] + 3}" keyTimes="0;0.53;0.531;0.58;1" rotate="auto" dur="${D}s" repeatCount="indefinite"/>
+  </line>
+  <g transform="translate(${boom[0]} ${boom[1]})">
+    <circle r="2" fill="url(#boomg)" opacity="0">
+      <animate attributeName="r" values="2;2;14;20;20" keyTimes="0;0.583;0.62;0.68;1" dur="${D}s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.583;0.6;0.68;1" dur="${D}s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2" fill="none" stroke="#ffb257" stroke-width="1.5" opacity="0">
+      <animate attributeName="r" values="2;2;26;26" keyTimes="0;0.583;0.7;1" dur="${D}s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;.9;0;0" keyTimes="0;0.583;0.6;0.7;1" dur="${D}s" repeatCount="indefinite"/>
+    </circle>
+    ${[[-1, -1], [1, -0.6], [0.4, 1], [-1, 0.7], [0.9, 0.3]]
+      .map(([dx, dy], i) => `<circle r="1.1" fill="${i % 2 ? '#ffb257' : hull}" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.583;0.6;0.78;1" dur="${D}s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 0;${dx * 28} ${dy * 22};${dx * 28} ${dy * 22}" keyTimes="0;0.583;0.78;1" dur="${D}s" repeatCount="indefinite"/>
+    </circle>`)
+      .join('')}
+  </g>
+  <!-- the far dogfight -->
+  <g transform="translate(1010 92) scale(.7)" opacity=".75">
+    <g>
+      <animateMotion path="M80 0 A80 24 0 1 1 -80 0 A80 24 0 1 1 80 0" rotate="auto" dur="9s" repeatCount="indefinite"/>
+      ${fighter('#7dd3fc')}${bolt('#7dd3fc', 1.3, 0.2, 44)}
+    </g>
+    <g>
+      <animateMotion path="M80 0 A80 24 0 1 1 -80 0 A80 24 0 1 1 80 0" rotate="auto" dur="9s" begin="-1.2s" repeatCount="indefinite"/>
+      ${fighter('#9ece6a')}${bolt('#9ece6a', 1.7, 0.9, 44)}
+    </g>
+  </g>
+</g>`;
+}
+
 export function heroSvg(profile, themeName, { missionName }) {
   const c = THEMES[themeName];
   const W = 1200;
@@ -291,6 +374,7 @@ ${REDUCED}`;
     <stop offset="0" stop-color="${c.haze}" stop-opacity="${c.hazeOpacity}"/><stop offset="1" stop-color="${c.haze}" stop-opacity="0"/>
   </radialGradient>
   <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+  <radialGradient id="boomg"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#fff4e2"/><stop offset=".65" stop-color="#ffb257" stop-opacity=".8"/><stop offset="1" stop-color="#f7768e" stop-opacity="0"/></radialGradient>
   <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#c9d1dc"/><stop offset=".6" stop-color="#8a94a6"/><stop offset="1" stop-color="#e6ebf2"/></linearGradient>
   <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb257"/><stop offset=".45" stop-color="#1b2a52"/><stop offset="1" stop-color="#070a14"/></linearGradient>
   <filter id="diskGlow" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="14 3"/></filter>
@@ -305,6 +389,7 @@ ${REDUCED}`;
     <rect width="${W}" height="${H}" fill="url(#haze)"/>
     <g fill="${c.star}">${stars}</g>
     ${twinklers}
+    ${spaceBattle(themeName === 'light')}
     ${orbiter(c, themeName === 'light', cx, cy, TILT, 'back')}
     <g mask="url(#doppler)">
       <!-- Gravitational lensing: the far side of the disk is bent into a thick band over the top

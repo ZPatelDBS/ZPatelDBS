@@ -17,3 +17,5 @@ Changes from upstream (November 2026):
   forever.
 - Singularity hero: a small astronaut developer with a laptop rides a chrome rocket hoverboard around the black hole (in front of
   the disk on the near side, behind the shadow on the far side).
+- Singularity hero: a distant space battle in the background (alien saucer, fighters, laser fire,
+  an explosion, and a far dogfight).
