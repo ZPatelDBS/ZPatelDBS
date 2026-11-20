@@ -62,8 +62,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-arcade-dark.svg" />
-    <img alt="An arcade maze made from the last year of contributions: one pellet per day, with the busiest days as power pellets. Pac-Man eats his way to a power pellet and chases the ghosts." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-arcade-light.svg" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-arcade-dark.svg?v=2" />
+    <img alt="An arcade maze made from the last year of contributions: one pellet per day, with the busiest days as power pellets. Pac-Man eats his way to a power pellet and chases the ghosts." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-arcade-light.svg?v=2" width="100%" />
   </picture>
 </p>
 
@@ -81,4 +81,4 @@
   </picture>
 </p>
 
-<p align="center"><sub>Artwork adapted from <a href="https://github.com/Dr-At0mic/README-Templates">README Templates</a> by Anandhu Suresh (GPL-3.0), regenerated nightly from live GitHub data.</sub></p>
+<!-- Artwork adapted from README Templates by Anandhu Suresh (https://github.com/Dr-At0mic/README-Templates), GPL-3.0. Regenerated nightly from live GitHub data. -->
