@@ -1,21 +1,23 @@
-<!-- ===== Animated header ===== -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7aa2f7,50:bb9af7,100:9ece6a&height=180&section=header&text=Zaeem%20Patel&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Full-stack%20developer%20%C2%B7%20Durban%2C%20South%20Africa&descAlignY=58&descSize=16&animation=twinkling" width="100%" />
-
+<!-- ===== Singularity: title card ===== -->
 <p align="center">
-  <a href="https://github.com/ZPatelDBS">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=3000&pause=800&color=7AA2F7&center=true&vCenter=true&width=620&lines=Full-stack+developer+%F0%9F%92%BB;Next.js+%C2%B7+Node.js+%C2%B7+PostgreSQL+%C2%B7+Redis;Building+enterprise+web+applications+%F0%9F%8F%97%EF%B8%8F;Learning+Power+Platform+%E2%9A%A1" alt="Typing SVG" />
-  </a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-hero-dark.svg" />
+    <img alt="Zaeem Patel, full-stack developer in Durban. A black hole whose accretion disk is drawn from a year of contributions, one particle per day." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-hero-light.svg" width="100%" />
+  </picture>
 </p>
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=ZPatelDBS&label=Profile%20views&color=7aa2f7&style=flat" />
-  <img src="https://img.shields.io/badge/Based%20in-Durban%20🇿🇦-9ece6a?style=flat" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=3000&pause=800&color=7DD3FC&center=true&vCenter=true&width=620&lines=Full-stack+developer+%F0%9F%92%BB;Next.js+%C2%B7+Node.js+%C2%B7+PostgreSQL+%C2%B7+Redis;Building+enterprise+web+applications+%F0%9F%8F%97%EF%B8%8F;Learning+Power+Platform+%E2%9A%A1" alt="Typing SVG" />
 </p>
 
-<!-- ===== Animated terminal ===== -->
 <p align="center">
-  <img src="./assets/terminal.svg" alt="terminal intro" width="100%" />
+  <img src="https://komarev.com/ghpvc/?username=ZPatelDBS&label=Profile%20views&color=7dd3fc&style=flat" />
+  <img src="https://img.shields.io/badge/Based%20in-Durban%20🇿🇦-ffb257?style=flat" />
 </p>
+
+> **Mission brief.** Full-stack developer building enterprise web applications in healthcare and identity: Next.js, Node.js, PostgreSQL and Redis on the modern side, ASP.NET MVC on the classic side.
+>
+> **Current objective.** Learning Power Apps, Power Automate and Power BI to automate real business processes.
 
 ## 🚀 What I do
 
@@ -41,30 +43,36 @@
   <img src="https://img.shields.io/badge/Claude%20Code-D97757?style=for-the-badge&logo=anthropic&logoColor=white" />
 </p>
 
-## 🏆 All-time contributions
+## 🛰️ Mission telemetry
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/contributions.svg" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-telemetry-dark.svg" />
+    <img alt="Mission telemetry: contributions per month as an orbit, with years on GitHub, contributions in the last 12 months, active days, longest streak, all-time contributions and best day." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/singularity-telemetry-light.svg" width="100%" />
+  </picture>
 </p>
 
-## 📊 GitHub stats
+## 👾 Player 1
 
 <p align="center">
-  <img height="170" src="https://github-readme-stats.vercel.app/api?username=ZPatelDBS&show_icons=true&count_private=true&theme=tokyonight&hide_border=true&bg_color=1a1b26" />
-  <img height="170" src="https://streak-stats.demolab.com?user=ZPatelDBS&theme=tokyonight&hide_border=true&background=1a1b26" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-arcade-dark.svg" />
+    <img alt="An arcade maze made from the last year of contributions: one pellet per day, with the busiest days as power pellets. Pac-Man eats his way to a power pellet and chases the ghosts." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-arcade-light.svg" width="100%" />
+  </picture>
 </p>
 
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=ZPatelDBS&theme=tokyo-night&hide_border=true&area=true&bg_color=1a1b26" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-scoreboard-dark.svg" />
+    <img alt="Scoreboard: the ghosts are the areas I work in, beside a high-score table of contribution stats, with my tech stack as bonus items." src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-scoreboard-light.svg" width="100%" />
+  </picture>
 </p>
 
-## 👾 Pac-Man vs my contributions
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-end-dark.svg" />
+    <img alt="Thanks for playing!" src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-end-light.svg" width="100%" />
+  </picture>
+</p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-contribution-graph-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-contribution-graph.svg" />
-  <img alt="Pac-Man contribution graph" src="https://raw.githubusercontent.com/ZPatelDBS/ZPatelDBS/output/pacman-contribution-graph.svg" />
-</picture>
-
-<!-- ===== Animated footer ===== -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:9ece6a,50:bb9af7,100:7aa2f7&height=110&section=footer&animation=twinkling" width="100%" />
+<p align="center"><sub>Artwork adapted from <a href="https://github.com/Dr-At0mic/README-Templates">README Templates</a> by Anandhu Suresh (GPL-3.0), regenerated nightly from live GitHub data.</sub></p>
