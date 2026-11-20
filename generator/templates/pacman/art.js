@@ -946,6 +946,172 @@ function simplify(wp) {
   return out;
 }
 
+
+// ---------------------------------------------------------------------------
+// Endless mode (added for ZPatelDBS): the chomper eats every contribution, the board clears, and
+// the game starts over, forever. Ghosts trail the chomper out of the pen and turn blue whenever it
+// eats a power pellet.
+// ---------------------------------------------------------------------------
+
+const TOUR_SPEED = 11; // nodes per second
+
+/** Greedy tour: from the pen door, always head for the nearest uneaten contribution. */
+function playTour(m, n) {
+  const targets = new Set();
+  n.grid.forEach((week, w) => week.forEach((day, d) => day && day.count > 0 && targets.add(`${w},${d + 1}`)));
+  n.power.forEach((p) => targets.add(`${p.w},${p.d + 1}`));
+  const powerKeys = new Set(n.power.map((p) => `${p.w},${p.d + 1}`));
+  const eaten = new Map();
+  const powerTimes = [];
+  const wp = [{ t: 0, x: DOOR[0], y: DOOR[1] }];
+  const dirs = [];
+  let node = DOOR;
+  let t = 0;
+  const face = (dx, dy) => {
+    const v = dirOf(dx, dy);
+    if (!dirs.length || dirs[dirs.length - 1].v !== v) dirs.push({ t, v });
+  };
+  const eat = (c, r) => {
+    const key = `${c},${r}`;
+    if (targets.has(key) && !eaten.has(key)) {
+      eaten.set(key, Math.max(0, t - 0.03));
+      if (powerKeys.has(key)) powerTimes.push(t);
+    }
+  };
+  while (eaten.size < targets.size) {
+    const b = bfs(m, node[0], node[1]);
+    let best = null;
+    targets.forEach((key) => {
+      if (eaten.has(key)) return;
+      const [c, r] = key.split(',').map(Number);
+      const d = b.dist(c, r);
+      if (d >= 0 && (!best || d < best.d)) best = { d, c, r };
+    });
+    if (!best) break;
+    for (const [c, r] of b.path(best.c, best.r)) {
+      const dx = c - node[0];
+      if (Math.abs(dx) > 1) {
+        // Through the tunnel: off one side of the board, back in from the other.
+        const dir = dx > 0 ? -1 : 1; // moving left wraps from col 0 to col 52
+        face(dir, 0);
+        const out = dir < 0 ? -1.5 : COLS + 0.5;
+        const back = dir < 0 ? COLS + 0.5 : -1.5;
+        t += 1.5 / TOUR_SPEED;
+        wp.push({ t, x: out, y: r });
+        wp.push({ t: t + 0.002, x: back, y: r });
+        t += 0.002 + 1.5 / TOUR_SPEED;
+      } else {
+        face(dx, r - node[1]);
+        t += 1 / TOUR_SPEED;
+      }
+      wp.push({ t, x: c, y: r });
+      node = [c, r];
+      eat(c, r);
+    }
+  }
+  return { wp, dirs, eaten, powerTimes, end: t };
+}
+
+/** Where a waypoint list puts a sprite at time t. */
+function posAt(wp, t) {
+  if (t <= wp[0].t) return { x: wp[0].x, y: wp[0].y };
+  for (let i = 1; i < wp.length; i++) {
+    if (t <= wp[i].t) {
+      const a = wp[i - 1];
+      const b = wp[i];
+      const f = (t - a.t) / Math.max(1e-6, b.t - a.t);
+      return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
+    }
+  }
+  const z = wp[wp.length - 1];
+  return { x: z.x, y: z.y };
+}
+
+function endlessSprites(c, maze, n, ghostCount, px) {
+  const tour = playTour(maze, n);
+  const R = 1.2; // READY! at the start of every round
+  const E = 2.4; // board clear at the end
+  const T = tour.end;
+  const L = r2(R + T + E);
+  const css = [];
+  const k = (t) => pct(t, L).replace(/%$/, '') + '%';
+  const keysMove = (name, wp) =>
+    `@keyframes ${name}{0%{transform:translate(${at(wp[0])})}${wp.map((p) => `${k(R + p.t)}{transform:translate(${at(p)})}`).join('')}100%{transform:translate(${at(wp[wp.length - 1])})}}`;
+  const keysStep = (name, list, cssOf, first) =>
+    `@keyframes ${name}{0%{${cssOf(first)}}${list.map((s) => `${k(R + s.t)}{${cssOf(s.v)}}`).join('')}}`;
+
+  // The chomper.
+  const pw = simplify(tour.wp);
+  css.push(
+    keysMove('pm', pw),
+    keysStep('pd', tour.dirs, (v) => `transform:rotate(${ROT[v]}deg)`, tour.dirs[0]?.v || 'u'),
+    `@keyframes pv{0%{opacity:1}${k(R + T + 0.9)}{opacity:0}100%{opacity:0}}`
+  );
+  let sprites = `<g class="appear"><g class="lm" style="animation-name:pm;transform:translate(${at(pw[0])})"><g class="ls" style="animation-name:pv"><g class="ls" style="animation-name:pd;transform:rotate(${ROT[tour.dirs[0]?.v || 'u']}deg)">${chomperSvg(P * 0.43, c.chomper, c.chomperEdge)}</g></g></g></g>`;
+
+  // Ghosts: out of the pen one by one, then on the chomper's trail.
+  const ghostS = r1(P * 0.84);
+  const parts = ghostParts(ghostS);
+  const FRIGHT = 5;
+  for (let i = 0; i < ghostCount; i++) {
+    const rel = 0.6 + i * 0.9;
+    const lag = rel + 0.6;
+    const gw = [
+      { t: 0, x: SLOTS[i], y: PEN_Y },
+      { t: rel, x: SLOTS[i], y: PEN_Y },
+      { t: rel + 0.25, x: DOOR[0], y: PEN_Y },
+      { t: lag, x: DOOR[0], y: DOOR[1] },
+    ];
+    tour.wp.forEach((p) => p.t > 0 && p.t + lag < T && gw.push({ t: p.t + lag, x: p.x, y: p.y }));
+    const stop = posAt(tour.wp, T - lag);
+    gw.push({ t: T, x: stop.x, y: stop.y });
+    const gs = simplify(gw);
+    const gdirs = [{ t: 0, v: 'u' }, ...tour.dirs.map((d) => ({ t: d.t + lag, v: d.v })).filter((d) => d.t < T)];
+    const looks = [{ t: 0, v: 'normal' }];
+    tour.powerTimes.forEach((pt) => {
+      looks.push({ t: pt, v: 'fright' }, { t: Math.min(pt + FRIGHT, T), v: 'normal' });
+    });
+    const lookIs = (want) => (v) => `opacity:${want.includes(v) ? 1 : 0}`;
+    css.push(
+      keysMove(`g${i}m`, gs),
+      keysStep(`g${i}n`, looks, lookIs(['normal']), 'normal'),
+      keysStep(`g${i}f`, looks, lookIs(['fright']), 'normal'),
+      keysStep(`g${i}p`, gdirs, (v) => `transform:translate(${r1(parts.look[v][0])}px,${r1(parts.look[v][1])}px)`, 'u'),
+      `@keyframes g${i}v{0%{opacity:1}${k(R + T + 0.9)}{opacity:0}100%{opacity:0}}`
+    );
+    const color = c.ghosts[i];
+    const edge = c.ghostEdge !== 'none' ? ` stroke="${c.ghostEdge}" stroke-opacity=".35" stroke-width=".7"` : '';
+    const skirts = (fill) =>
+      `<path class="flip" style="animation-duration:.32s" d="${parts.skirtA}" fill="${fill}"/><path class="flip" style="animation-duration:.32s;animation-delay:-.16s" opacity="0" d="${parts.skirtB}" fill="${fill}"/>`;
+    sprites += `<g class="appear"><g class="lm" style="animation-name:g${i}m;transform:translate(${at(gs[0])})"><g class="ls" style="animation-name:g${i}v">
+<g class="ls" style="animation-name:g${i}n"><path d="${parts.body}" fill="${color}"${edge}/>${skirts(color)}</g>
+<g class="ls" style="animation-name:g${i}f" opacity="0"><path d="${parts.body}" fill="${c.fright}"/>${skirts(c.fright)}${parts.frightEyes.map((e) => `<rect x="${r1(e.x - e.r)}" y="${r1(e.y - e.r)}" width="${r1(e.r * 2)}" height="${r1(e.r * 2)}" fill="${c.frightFace}"/>`).join('')}<path d="${parts.face}" fill="none" stroke="${c.frightFace}" stroke-width="1" stroke-linejoin="round"/></g>
+<g class="ls" style="animation-name:g${i}n">${parts.eyes.map((e) => `<ellipse cx="${r1(e.x)}" cy="${r1(e.y)}" rx="${r1(e.rx)}" ry="${r1(e.ry)}" fill="${c.eye}"/>`).join('')}<g class="ls" style="animation-name:g${i}p">${parts.eyes.map((e) => `<circle cx="${r1(e.x)}" cy="${r1(e.y)}" r="${r1(parts.pupil)}" fill="${c.pupil}"/>`).join('')}</g></g>
+</g></g></g>`;
+  }
+
+  // Pellets: each vanishes when eaten and comes back when the round restarts.
+  const pelletKeys = new Map();
+  tour.eaten.forEach((te, key) => {
+    const name = `e${pelletKeys.size}`;
+    pelletKeys.set(key, name);
+    css.push(`@keyframes ${name}{0%{opacity:1}${k(R + te)}{opacity:0}100%{opacity:0}}`);
+  });
+
+  // READY! each round, CLEAR! at the end, and the walls flash like a finished arcade level.
+  const flashAt = R + T + 0.3;
+  const blinks = [0, 0.25, 0.5, 0.75, 1, 1.25].map((d, j) => `${k(flashAt + d)}{opacity:${j % 2 ? 0 : 1}}`).join('');
+  css.push(
+    `@keyframes rdy{0%{opacity:1}${k(R)}{opacity:0}100%{opacity:0}}`,
+    `@keyframes clr{0%{opacity:0}${k(R + T + 0.3)}{opacity:1}${k(R + T + 2.2)}{opacity:0}100%{opacity:0}}`,
+    `@keyframes wf{0%{opacity:0}${blinks}${k(flashAt + 1.5)}{opacity:0}100%{opacity:0}}`
+  );
+  const ready = `<g class="ls" style="animation-name:rdy" opacity="0">${px.text('READY!', bx(MID), by(ROWS - 1) + 7, 2, { anchor: 'middle', fill: c.ready })}</g>
+<g class="ls" style="animation-name:clr" opacity="0">${px.text('CLEAR!', bx(MID), by(ROWS - 1) + 7, 2, { anchor: 'middle', fill: c.ready })}</g>`;
+  const firstPower = tour.powerTimes.length ? R + tour.powerTimes[0] : 0;
+  return { css, sprites, pelletKeys, ready, L, firstPower };
+}
+
 // ---------------------------------------------------------------------------
 // Sprites
 // ---------------------------------------------------------------------------
@@ -1028,7 +1194,7 @@ function stepKeys(name, list, D, css, first) {
 }
 const ROT = { r: 0, d: 90, l: 180, u: 270 };
 
-export function heroSvg(profile, themeName, { role }) {
+export function heroSvg(profile, themeName, { role, endless = false }) {
   const c = THEMES[themeName];
   const dark = themeName === 'dark';
   const W = 1200;
@@ -1038,9 +1204,10 @@ export function heroSvg(profile, themeName, { role }) {
   const login = profile.login || 'player';
   const repos = featuredRepos(profile);
   const maze = buildMaze(login);
-  const demo = playDemo(maze, n, Math.min(4, repos.length), login);
   const px = pixelKit();
   const css = [];
+  const loop = endless ? endlessSprites(THEMES[themeName], maze, n, Math.min(4, repos.length), px) : null;
+  const demo = loop ? null : playDemo(maze, n, Math.min(4, repos.length), login);
 
   // --- The demo, as keyframes.
   const D = r2(T_PLAY + (demo ? demo.end : 0) + 0.1);
@@ -1093,6 +1260,11 @@ export function heroSvg(profile, themeName, { role }) {
       const label = repo?.stars ? `★${short(repo.stars)}` : 'SHIPPED';
       popups += `<g class="win" style="animation-delay:${secs(playT(p.t))};animation-duration:${secs(FREEZE + 0.45)}" opacity="0">${px.text(label, bx(p.x), by(p.y) + 6, 1.8, { anchor: 'middle', fill: c.popup })}</g>`;
     });
+  }
+
+  if (loop) {
+    css.push(...loop.css);
+    sprites = loop.sprites;
   }
 
   // --- The board: walls as doubled neon tube.
@@ -1166,7 +1338,8 @@ export function heroSvg(profile, themeName, { role }) {
       if (powerKey.has(key)) return;
       const L = n.level(day.count);
       const dot = pth`M${bx(w)} ${by(d + 1)}h0`;
-      if (eatenAt.has(key)) gone[L].push(`<path class="held" style="animation-duration:${secs(playT(eatenAt.get(key)))}" opacity="0" d="${dot}"/>`);
+      if (loop && loop.pelletKeys.has(key)) gone[L].push(`<path class="ls" style="animation-name:${loop.pelletKeys.get(key)}" d="${dot}"/>`);
+      else if (!loop && eatenAt.has(key)) gone[L].push(`<path class="held" style="animation-duration:${secs(playT(eatenAt.get(key)))}" opacity="0" d="${dot}"/>`);
       else plain[L].push(dot);
     })
   );
@@ -1180,7 +1353,8 @@ export function heroSvg(profile, themeName, { role }) {
     .map(([w, r]) => {
       const key = `${w},${r}`;
       const pellet = `<g class="flip" style="animation-duration:.9s"><circle cx="${bx(w)}" cy="${by(r)}" r="${POWER_R * 2.3}" fill="url(#halo)"/><circle cx="${bx(w)}" cy="${by(r)}" r="${POWER_R}" fill="${c.pellet}"/></g>`;
-      return eatenAt.has(key) ? `<g class="held" style="animation-duration:${secs(playT(eatenAt.get(key)))}" opacity="0">${pellet}</g>` : pellet;
+      if (loop && loop.pelletKeys.has(key)) return `<g class="ls" style="animation-name:${loop.pelletKeys.get(key)}">${pellet}</g>`;
+      return !loop && eatenAt.has(key) ? `<g class="held" style="animation-duration:${secs(playT(eatenAt.get(key)))}" opacity="0">${pellet}</g>` : pellet;
     })
     .join('');
 
@@ -1287,16 +1461,20 @@ export function heroSvg(profile, themeName, { role }) {
 </g>`;
 
   // READY!, in the corridor over the pen.
-  const ready = `<g class="win" style="animation-delay:${secs(T_READY)};animation-duration:${secs(T_PLAY - T_READY)}" opacity="0">${px.text('READY!', bx(MID), by(ROWS - 1) + 7, 2, { anchor: 'middle', fill: c.ready })}</g>`;
+  const ready = loop
+    ? loop.ready
+    : `<g class="win" style="animation-delay:${secs(T_READY)};animation-duration:${secs(T_PLAY - T_READY)}" opacity="0">${px.text('READY!', bx(MID), by(ROWS - 1) + 7, 2, { anchor: 'middle', fill: c.ready })}</g>`;
 
   // The pen door, and the moment the busiest day powers the chomper up: the name catches the light.
   const door = `<path d="${pth`M${bx(MID - 0.6)} ${by(ROWS - 0.5)}H${bx(MID + 0.6)}`}" stroke="${c.door}" stroke-width="2.4"/>`;
-  const glintAt = demo ? playT(demo.powerAt) : T_PLAY;
+  const glintAt = loop ? T_READY + loop.firstPower : demo ? playT(demo.powerAt) : T_PLAY;
 
   const boardTop = by(-0.5) - 8;
   const boardBottom = by(PEN_FLOOR) + 8;
   css.unshift(`
 .mv{animation-duration:${secs(D)};animation-timing-function:linear;animation-fill-mode:both}
+.lm{animation-duration:${secs(loop ? loop.L : D)};animation-timing-function:linear;animation-delay:${secs(T_READY)};animation-iteration-count:infinite;animation-fill-mode:both}
+.ls{animation-duration:${secs(loop ? loop.L : D)};animation-timing-function:step-end;animation-delay:${secs(T_READY)};animation-iteration-count:infinite;animation-fill-mode:both}
 .st{animation-duration:${secs(D)};animation-timing-function:step-end;animation-fill-mode:both}
 .held{animation-name:held;animation-timing-function:step-end;animation-fill-mode:both}
 .win{animation-name:held;animation-timing-function:step-end}
@@ -1356,6 +1534,7 @@ ${REDUCED}`);
     <g clip-path="url(#wallsIn)">
       <path d="${walls}" fill="none" stroke="${c.wallGlow}" stroke-opacity="${c.wallGlowOp}" stroke-width="${r1(WO + 6)}" stroke-linecap="round" stroke-linejoin="round"/>
       <rect x="0" y="${boardTop}" width="${W}" height="${boardBottom - boardTop}" fill="url(#wallGrad)" mask="url(#wallMask)"/>
+      ${loop ? `<rect class="ls" style="animation-name:wf" opacity="0" x="0" y="${boardTop}" width="${W}" height="${boardBottom - boardTop}" fill="#ffffff" mask="url(#wallMask)"/>` : ''}
       ${door}
     </g>
     <g clip-path="url(#sweepIn)">${pelletsSvg}${powerSvg}</g>

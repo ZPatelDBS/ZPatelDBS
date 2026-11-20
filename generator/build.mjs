@@ -96,7 +96,7 @@ try {
   for (const theme of ['dark', 'light']) {
     files[`singularity-hero-${theme}.svg`] = sing.heroSvg(profile, theme, { missionName: config.missionName });
     files[`singularity-telemetry-${theme}.svg`] = sing.telemetrySvg(profile, theme, { missionName: config.missionName });
-    files[`pacman-arcade-${theme}.svg`] = pac.heroSvg(profile, theme, { role: config.playerClass });
+    files[`pacman-arcade-${theme}.svg`] = pac.heroSvg(profile, theme, { role: config.playerClass, endless: true });
     files[`pacman-scoreboard-${theme}.svg`] = pac.scoreSvg(profile, theme);
     files[`pacman-end-${theme}.svg`] = pac.endSvg(profile, theme, { signoff: config.signoff });
   }

@@ -12,3 +12,6 @@ Changes from upstream (November 2026):
   the configured `stack` instead.
 - Pac-Man scoreboard: same all-time swap in the high-score table, and `stack` as bonus items.
 - `build.mjs` and `config.json` are new: they fetch live GitHub data and write the SVGs.
+- Pac-Man hero: new endless mode (`endless: true`). The chomper tours every contribution pellet,
+  ghosts trail it and turn blue on power pellets, the board flashes CLEAR!, and the round restarts
+  forever.
