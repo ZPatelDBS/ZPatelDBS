@@ -98,6 +98,85 @@ const fmt = (n) => n.toLocaleString('en-US');
 // 1. Hero — the black hole
 // ---------------------------------------------------------------------------
 
+
+// Added for ZPatelDBS: a tiny astronaut developer, laptop open, orbiting the hole. One copy rides the
+// near half of the orbit in front of everything; the other rides the far half behind the shadow.
+// SMIL motion so it plays inside an <img>; both copies share one clock so the hand-off is seamless.
+function astronaut(c, light) {
+  const suit = light ? '#ffffff' : '#e9ecf2';
+  const shade = light ? '#c9cdd6' : '#aab1bf';
+  const line = light ? '#14161c' : '#0a0c12';
+  // Drawn facing right (direction of travel); the boosters fire to the left.
+  return `<g>
+  <animateTransform attributeName="transform" type="translate" values="0 0;0 -4;0 0" dur="2.4s" repeatCount="indefinite"/>
+  <!-- speed lines and sparks trailing behind -->
+  <g stroke="#7dd3fc" stroke-linecap="round">
+    <line x1="-40" y1="20" x2="-70" y2="20" stroke-opacity=".5"><animate attributeName="x2" values="-60;-84;-60" dur=".5s" repeatCount="indefinite"/></line>
+    <line x1="-36" y1="-6" x2="-58" y2="-6" stroke-opacity=".3"><animate attributeName="x2" values="-50;-70;-50" dur=".7s" repeatCount="indefinite"/></line>
+    <line x1="-30" y1="-22" x2="-46" y2="-22" stroke-opacity=".25"><animate attributeName="x2" values="-40;-56;-40" dur=".6s" repeatCount="indefinite"/></line>
+  </g>
+  <g fill="#ffb257">
+    <circle cx="-50" cy="30" r="1.6"><animate attributeName="cx" values="-44;-80" dur=".9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur=".9s" repeatCount="indefinite"/></circle>
+    <circle cx="-50" cy="27" r="1.2"><animate attributeName="cx" values="-44;-74" dur=".7s" begin=".3s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur=".7s" begin=".3s" repeatCount="indefinite"/></circle>
+  </g>
+  <!-- hover glow -->
+  <ellipse cx="0" cy="38" rx="24" ry="4" fill="#7dd3fc" opacity=".25" filter="url(#glow)"><animate attributeName="opacity" values=".15;.4;.15" dur="1.2s" repeatCount="indefinite"/></ellipse>
+  <!-- rocket flames -->
+  <g>
+    <path d="M-30 26 L-48 28.5 L-30 31 Z" fill="#ffb257"><animate attributeName="d" values="M-30 26 L-48 28.5 L-30 31 Z;M-30 26 L-56 28.5 L-30 31 Z;M-30 26 L-48 28.5 L-30 31 Z" dur=".18s" repeatCount="indefinite"/></path>
+    <path d="M-30 27 L-40 28.5 L-30 30 Z" fill="#fff4e2"/>
+    <path d="M-30 32 L-46 34 L-30 36 Z" fill="#f7768e" opacity=".9"><animate attributeName="d" values="M-30 32 L-46 34 L-30 36 Z;M-30 32 L-52 34 L-30 36 Z;M-30 32 L-46 34 L-30 36 Z" dur=".22s" repeatCount="indefinite"/></path>
+    <path d="M-30 33 L-38 34 L-30 35 Z" fill="#fff4e2"/>
+  </g>
+  <!-- boosters -->
+  <rect x="-30" y="25" width="12" height="7" rx="2" fill="url(#chrome)" stroke="${line}" stroke-opacity=".5"/>
+  <rect x="-30" y="31" width="10" height="6" rx="2" fill="url(#chrome)" stroke="${line}" stroke-opacity=".5"/>
+  <!-- the board -->
+  <path d="M-24 30 Q-26 36 -18 36 L22 35 Q32 33 30 29 Q28 27 20 28 L-18 28 Q-23 28 -24 30 Z" fill="url(#chrome)" stroke="${line}" stroke-opacity=".55"/>
+  <path d="M-16 30 L22 29.6" stroke="#ffffff" stroke-opacity=".8" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M-14 33.5 L20 33" stroke="#7dd3fc" stroke-width="1.4" stroke-linecap="round"><animate attributeName="stroke-opacity" values=".4;1;.4" dur="1s" repeatCount="indefinite"/></path>
+  <!-- rider, leaning into the turn -->
+  <g transform="rotate(8 0 28)">
+    <rect x="-6" y="14" width="6" height="14" rx="3" fill="${suit}" stroke="${line}" stroke-opacity=".5"/>
+    <rect x="3" y="14" width="6" height="14" rx="3" fill="${suit}" stroke="${line}" stroke-opacity=".5"/>
+    <rect x="-7" y="25" width="8" height="4" rx="2" fill="${shade}"/><rect x="2" y="25" width="8" height="4" rx="2" fill="${shade}"/>
+    <rect x="-15" y="-6" width="12" height="19" rx="4" fill="${shade}" stroke="${line}" stroke-opacity=".5"/>
+    <rect x="-8" y="-4" width="18" height="21" rx="7" fill="${suit}" stroke="${line}" stroke-opacity=".5"/>
+    <circle cx="1" cy="-13" r="11" fill="${suit}" stroke="${line}" stroke-opacity=".5"/>
+    <path d="M-5 -15a8 7 0 0 1 15 0v3a8 6 0 0 1-15 0z" fill="url(#visor)"/>
+    <path d="M-1 -17a5 3 0 0 1 6 -1" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="1" y1="-24" x2="-2" y2="-29" stroke="${shade}" stroke-width="1.2"/><circle cx="-2.5" cy="-30" r="1.6" fill="#f7768e"><animate attributeName="opacity" values="1;.2;1" dur="1.2s" repeatCount="indefinite"/></circle>
+    <g transform="translate(9 4) rotate(-8)">
+      <rect x="0" y="0" width="20" height="3" rx="1" fill="#3b4252" stroke="${line}" stroke-opacity=".4"/>
+      <rect x="1" y="-13" width="18" height="13" rx="1.5" fill="#1b2231" stroke="${line}" stroke-opacity=".4"/>
+      <rect x="2.5" y="-11.5" width="15" height="10" fill="#0b1830"/>
+      <g fill="#7dd3fc"><rect x="4" y="-10" width="7" height="1.2"><animate attributeName="width" values="2;9;2" dur="2.1s" repeatCount="indefinite"/></rect>
+        <rect x="5.5" y="-7.5" width="9" height="1.2" fill="#ffb257"/><rect x="5.5" y="-5" width="5" height="1.2"><animate attributeName="width" values="5;10;5" dur="1.6s" repeatCount="indefinite"/></rect><rect x="4" y="-2.5" width="4" height="1.2" fill="#9ece6a"/></g>
+      <rect x="1" y="-13" width="18" height="13" rx="1.5" fill="#7dd3fc" opacity=".12" filter="url(#glow)"/>
+    </g>
+    <rect x="5" y="1" width="10" height="5" rx="2.5" fill="${suit}" stroke="${line}" stroke-opacity=".5" transform="rotate(-20 5 1)"/>
+  </g>
+</g>`;
+}
+
+function orbiter(c, light, cx, cy, tilt, half) {
+  const ORX = 430;
+  const ORY = 96;
+  const DUR = 22;
+  const oy = cy - 10;
+  const path = `M${cx + ORX} ${oy}A${ORX} ${ORY} 0 1 1 ${cx - ORX} ${oy}A${ORX} ${ORY} 0 1 1 ${cx + ORX} ${oy}`;
+  // Near half (bottom) is the first half of the loop; far half (top) the second.
+  const vis = half === 'front' ? '1;1;0;0' : '0;0;1;1';
+  return `<g transform="rotate(${tilt} ${cx} ${cy})"><g opacity="0">
+  <animate attributeName="opacity" values="${vis}" keyTimes="0;0.5;0.5;1" calcMode="discrete" dur="${DUR}s" repeatCount="indefinite"/>
+  <animateMotion dur="${DUR}s" repeatCount="indefinite" path="${path}"/>
+  <g transform="rotate(${-tilt})${half === 'front' ? ' scale(-1 1)' : ''}"><g>
+    <animateTransform attributeName="transform" type="scale" values="0.95;1.1;0.95;0.62;0.95" keyTimes="0;0.25;0.5;0.75;1" dur="${DUR}s" repeatCount="indefinite"/>
+    ${astronaut(c, light)}
+  </g></g>
+</g></g>`;
+}
+
 export function heroSvg(profile, themeName, { missionName }) {
   const c = THEMES[themeName];
   const W = 1200;
@@ -212,6 +291,8 @@ ${REDUCED}`;
     <stop offset="0" stop-color="${c.haze}" stop-opacity="${c.hazeOpacity}"/><stop offset="1" stop-color="${c.haze}" stop-opacity="0"/>
   </radialGradient>
   <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+  <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#c9d1dc"/><stop offset=".6" stop-color="#8a94a6"/><stop offset="1" stop-color="#e6ebf2"/></linearGradient>
+  <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb257"/><stop offset=".45" stop-color="#1b2a52"/><stop offset="1" stop-color="#070a14"/></linearGradient>
   <filter id="diskGlow" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="14 3"/></filter>
   <g id="rings">${rings}</g>
   <g id="b0" fill="none" stroke-linecap="round">${bands[0]}</g>
@@ -224,6 +305,7 @@ ${REDUCED}`;
     <rect width="${W}" height="${H}" fill="url(#haze)"/>
     <g fill="${c.star}">${stars}</g>
     ${twinklers}
+    ${orbiter(c, themeName === 'light', cx, cy, TILT, 'back')}
     <g mask="url(#doppler)">
       <!-- Gravitational lensing: the far side of the disk is bent into a thick band over the top
            of the shadow and a thin one beneath it. -->
@@ -239,6 +321,7 @@ ${REDUCED}`;
     <circle cx="${cx}" cy="${cy}" r="${Rs}" fill="${c.shadow}"/>
     <circle cx="${cx}" cy="${cy}" r="${Rs * 1.05}" fill="none" stroke="${c.diskHi}" stroke-width="2" stroke-opacity="0.9" mask="url(#doppler)"/>
     ${disk('front')}
+    ${orbiter(c, themeName === 'light', cx, cy, TILT, 'front')}
     <text class="title" x="${cx + tracking / 2}" y="452" text-anchor="middle" font-family="${THIN}" font-weight="300" font-size="${nameSize}" letter-spacing="${r1(tracking)}" fill="${c.fg}">${escapeXml(name)}</text>
     ${sub ? `<text class="sub" x="${cx + 2}" y="486" text-anchor="middle" font-family="${THIN}" font-weight="300" font-size="16" letter-spacing="2" fill="${c.muted}">${escapeXml(sub)}</text>` : ''}
   </g>

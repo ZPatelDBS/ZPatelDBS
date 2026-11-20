@@ -15,3 +15,5 @@ Changes from upstream (November 2026):
 - Pac-Man hero: new endless mode (`endless: true`). The chomper tours every contribution pellet,
   ghosts trail it and turn blue on power pellets, the board flashes CLEAR!, and the round restarts
   forever.
+- Singularity hero: a small astronaut developer with a laptop rides a chrome rocket hoverboard around the black hole (in front of
+  the disk on the near side, behind the shadow on the far side).
