@@ -260,6 +260,66 @@ function spaceBattle(light) {
 </g>`;
 }
 
+
+// Added for ZPatelDBS: Earth in the far distance (Africa facing us, a light on Durban) with a rocket
+// launching from it every ten seconds. SMIL, so it plays inside an <img>.
+function earthAndRocket(light) {
+  const X = 1112;
+  const Y = 452;
+  const R = 24;
+  const D = 10;
+  // Launch from the upper-left limb, arc up and away toward the hole.
+  const pad = [X - 15, Y - 19];
+  const flight = `M${pad[0]} ${pad[1]} C${pad[0] - 10} ${pad[1] - 40} ${pad[0] - 40} ${pad[1] - 80} ${pad[0] - 95} ${pad[1] - 105}`;
+  return `<g opacity="${light ? 0.8 : 0.9}">
+  <circle cx="${X}" cy="${Y}" r="${R + 7}" fill="#7dd3fc" opacity=".12" filter="url(#glow)"/>
+  <clipPath id="earthClip"><circle cx="${X}" cy="${Y}" r="${R}"/></clipPath>
+  <g clip-path="url(#earthClip)">
+    <circle cx="${X}" cy="${Y}" r="${R}" fill="url(#ocean)"/>
+    <!-- Africa, Europe's edge and Arabia, stylised -->
+    <path d="M${X - 6} ${Y - 16} q6 -3 12 -1 q3 2 6 1 q2 4 -1 7 q-1 3 2 5 q3 3 1 7 q-3 4 -5 9 q-2 5 -6 6 q-3 0 -4 -4 q-1 -5 -3 -8 q-3 -2 -5 -6 q-1 -5 1 -9 q1 -5 2 -7z" fill="#5f9e4a"/>
+    <path d="M${X + 9} ${Y - 14} q5 1 8 4 q-1 3 -5 3 q-3 -2 -3 -7z" fill="#8a7a4a"/>
+    <path d="M${X - 8} ${Y - 22} q8 -3 16 -1 q-2 3 -8 3 q-5 0 -8 -2z" fill="#5f9e4a"/>
+    <path d="M${X + 11} ${Y + 7} q2 2 1 5 q-2 1 -2 -2z" fill="#5f9e4a"/>
+    <!-- drifting clouds -->
+    <g fill="#ffffff" opacity=".55">
+      <animateTransform attributeName="transform" type="translate" values="-14 0;14 0" dur="40s" repeatCount="indefinite"/>
+      <ellipse cx="${X - 10}" cy="${Y - 6}" rx="7" ry="1.4"/><ellipse cx="${X + 6}" cy="${Y + 3}" rx="9" ry="1.2"/><ellipse cx="${X - 2}" cy="${Y + 14}" rx="6" ry="1.2"/>
+      <ellipse cx="${X - 30}" cy="${Y + 8}" rx="8" ry="1.3"/><ellipse cx="${X + 26}" cy="${Y - 10}" rx="7" ry="1.3"/>
+    </g>
+    <!-- night side -->
+    <circle cx="${X + 13}" cy="${Y + 6}" r="${R + 4}" fill="#04050a" opacity=".55" filter="url(#glow)"/>
+  </g>
+  <circle cx="${X}" cy="${Y}" r="${R}" fill="none" stroke="#7dd3fc" stroke-opacity=".55" stroke-width="1.2"/>
+  <!-- Durban -->
+  <circle cx="${X + 3}" cy="${Y + 13}" r="1.3" fill="#ffb257"><animate attributeName="opacity" values="1;.3;1" dur="1.8s" repeatCount="indefinite"/></circle>
+  <text x="${X}" y="${Y + 40}" text-anchor="middle" font-family="${MONO}" font-size="8" letter-spacing="1.5" fill="#8a90a3" opacity=".8">EARTH · DBN</text>
+
+  <!-- exhaust trail, drawn along the flight path as the rocket climbs -->
+  <path d="${flight}" fill="none" stroke="#fff4e2" stroke-width="1.6" stroke-linecap="round" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" opacity="0">
+    <animate attributeName="stroke-dashoffset" values="100;100;0;0" keyTimes="0;0.1;0.5;1" dur="${D}s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;.7;.5;0;0" keyTimes="0;0.1;0.5;0.75;1" dur="${D}s" repeatCount="indefinite"/>
+  </path>
+  <path d="${flight}" fill="none" stroke="#ffb257" stroke-width="5" stroke-linecap="round" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" opacity="0" filter="url(#glow)">
+    <animate attributeName="stroke-dashoffset" values="100;100;0;0" keyTimes="0;0.1;0.5;1" dur="${D}s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;.35;.2;0;0" keyTimes="0;0.1;0.5;0.7;1" dur="${D}s" repeatCount="indefinite"/>
+  </path>
+  <!-- the rocket -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.06;0.52;0.6;1" dur="${D}s" repeatCount="indefinite"/>
+    <animateMotion path="${flight}" keyPoints="0;0;1;1" keyTimes="0;0.1;0.55;1" calcMode="spline" keySplines="0 0 1 1;.5 0 .7 1;0 0 1 1" rotate="auto" dur="${D}s" repeatCount="indefinite"/>
+    <g transform="scale(.9)">
+      <path d="M-4 0 L-14 -2.2 L-11 0 L-14 2.2 Z" fill="#ffb257"><animate attributeName="d" values="M-4 0 L-14 -2.2 L-11 0 L-14 2.2 Z;M-4 0 L-19 -2.6 L-13 0 L-19 2.6 Z;M-4 0 L-14 -2.2 L-11 0 L-14 2.2 Z" dur=".15s" repeatCount="indefinite"/></path>
+      <path d="M-4 0 L-9 -1 L-9 1 Z" fill="#fff4e2"/>
+      <rect x="-5" y="-2.2" width="10" height="4.4" rx="1.5" fill="#e9ecf2"/>
+      <path d="M5 -2.2 Q10 0 5 2.2 Z" fill="#f7768e"/>
+      <path d="M-5 -2.2 L-7 -4.5 L-2 -2.2 Z M-5 2.2 L-7 4.5 L-2 2.2 Z" fill="#7dd3fc"/>
+      <circle cx="1.5" cy="0" r="1" fill="#1b2a52"/>
+    </g>
+  </g>
+</g>`;
+}
+
 export function heroSvg(profile, themeName, { missionName }) {
   const c = THEMES[themeName];
   const W = 1200;
@@ -374,6 +434,7 @@ ${REDUCED}`;
     <stop offset="0" stop-color="${c.haze}" stop-opacity="${c.hazeOpacity}"/><stop offset="1" stop-color="${c.haze}" stop-opacity="0"/>
   </radialGradient>
   <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+  <radialGradient id="ocean" cx="35%" cy="35%" r="75%"><stop offset="0" stop-color="#5aa9e6"/><stop offset=".6" stop-color="#1f5fa8"/><stop offset="1" stop-color="#0c2a55"/></radialGradient>
   <radialGradient id="boomg"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#fff4e2"/><stop offset=".65" stop-color="#ffb257" stop-opacity=".8"/><stop offset="1" stop-color="#f7768e" stop-opacity="0"/></radialGradient>
   <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#c9d1dc"/><stop offset=".6" stop-color="#8a94a6"/><stop offset="1" stop-color="#e6ebf2"/></linearGradient>
   <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb257"/><stop offset=".45" stop-color="#1b2a52"/><stop offset="1" stop-color="#070a14"/></linearGradient>
@@ -390,6 +451,7 @@ ${REDUCED}`;
     <g fill="${c.star}">${stars}</g>
     ${twinklers}
     ${spaceBattle(themeName === 'light')}
+    ${earthAndRocket(themeName === 'light')}
     ${orbiter(c, themeName === 'light', cx, cy, TILT, 'back')}
     <g mask="url(#doppler)">
       <!-- Gravitational lensing: the far side of the disk is bent into a thick band over the top

@@ -19,3 +19,4 @@ Changes from upstream (November 2026):
   the disk on the near side, behind the shadow on the far side).
 - Singularity hero: a distant space battle in the background (alien saucer, fighters, laser fire,
   an explosion, and a far dogfight).
+- Singularity hero: Earth in the far distance (a light on Durban) with a rocket launching every 10s.
